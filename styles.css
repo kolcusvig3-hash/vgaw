@@ -1,0 +1,16 @@
+:root{--accent:#0b5ed7;--bg:#f6f8fb}
+*{box-sizing:border-box}
+body{font-family:Arial, Helvetica, sans-serif;margin:0;background:var(--bg);color:#111}
+.wrap{max-width:980px;margin:0 auto;padding:18px}
+.topbar{background:#072e78;color:#fff;padding:14px 0}
+.topbar h1{margin:0;font-size:18px}
+.topbar nav{margin-top:8px}
+.topbar nav a{color:#fff;margin-right:12px;text-decoration:none}
+.card{background:#fff;border-radius:8px;padding:14px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1fr 320px;gap:12px}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+.footer{font-size:13px;color:#444}
+.button{background:var(--accent);color:#fff;padding:10px 12px;border:none;border-radius:6px;text-decoration:none}
+.small{font-size:13px;color:#666}
+.clue-hidden{background:#f2f4f7;padding:12px;border-radius:8px}
+.pdf-link{display:block;margin:6px 0}

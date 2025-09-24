@@ -2,10 +2,20 @@
 *{box-sizing:border-box}
 body{font-family:Arial, Helvetica, sans-serif;margin:0;background:var(--bg);color:#111}
 .wrap{max-width:980px;margin:0 auto;padding:18px}
-.topbar{background:#072e78;color:#fff;padding:14px 0}
+
+/* styles.css */
+
+.logo-nav {  height: 30px; /* Adjust this value as needed */  width: auto; /* Maintain aspect ratio */  vertical-align: middle; /* Aligns the logo vertically with text */  margin-right: 15px; /* Add some space between the logo and "Home" */}
+.topbar nav {  display: flex; /* Use flexbox for better alignment of items */  align-items: center; /* Vertically align items in the center */}
+.topbar nav a {  /* existing styles for your nav links */  margin-right: 15px; /* Add some space between links */  text-decoration: none;  color: white;  font-size: 1.1em;}
+.topbar h1 {    /* existing styles for your title */    font-size: 1.8em; /* Example adjustment */    color: white;    margin: 0;    padding: 0 0 10px 0; /* Add some padding below the title */}
+.topbar {    background-color: #0a1f5a; /* Example background color from your screenshot */    padding: 20px 0;}
+.topbar .wrap {    max-width: 1200px; /* Adjust max-width as per your design */    margin: 0 auto;    padding: 0 20px;    display: flex; /* To put title and nav side-by-side or stacked */    flex-direction: column; /* Stack title and nav */    align-items: flex-start; /* Align items to the start */}
+.topbar .wrap nav {    display: flex;    align-items: center;    margin-top: 10px; /* Space between title and nav */}
+/* .topbar{background:#072e78;color:#fff;padding:14px 0}
 .topbar h1{margin:0;font-size:18px}
 .topbar nav{margin-top:8px}
-.topbar nav a{color:#fff;margin-right:12px;text-decoration:none}
+.topbar nav a{color:#fff;margin-right:12px;text-decoration:none} */
 .card{background:#fff;border-radius:8px;padding:14px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-bottom:14px}
 .grid{display:grid;grid-template-columns:1fr 320px;gap:12px}
 @media(max-width:880px){.grid{grid-template-columns:1fr}}
@@ -14,3 +24,6 @@ body{font-family:Arial, Helvetica, sans-serif;margin:0;background:var(--bg);colo
 .small{font-size:13px;color:#666}
 .clue-hidden{background:#f2f4f7;padding:12px;border-radius:8px}
 .pdf-link{display:block;margin:6px 0}
+.footer-content {  display: flex;  align-items: center;  }
+.footer-content .logo {  height: 1.5em; /* This sets the logo's height to match the font size of the text */  width: auto; /* This maintains the aspect ratio of the logo */}
+

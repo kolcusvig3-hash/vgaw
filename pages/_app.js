@@ -8,7 +8,8 @@ export default function App({ Component, pageProps }){
         <div className="wrap">
           <h1>{CONFIG.SITE_TITLE}</h1>
           <nav>
-            <a href="/">Home</a>
+            <img src="/logo/customs.jpg" alt="Kolkata Custom Logo" className="logo" />
+            <a href="/" style={{marginLeft:24}}>Home</a>
             <a href="/register">Register</a>
             <a href="/leaderboard">Leaderboard</a>
             <a href="/day/1">Day 1</a>
@@ -23,7 +24,12 @@ export default function App({ Component, pageProps }){
       <main className="wrap">
         <Component {...pageProps} />
       </main>
-      <footer className="wrap footer">This is a prototype site for Vigilance Awareness Week. Replace PDFs in /public/pdfs/ with official sample PDFs.</footer>
+      <footer className="wrap footer">
+        <div className="footer-content">
+          <span>© Developed with the help of OneByZeroBiz.</span>
+          <img src="/logo/onebyzerobiz.jpeg" alt="OneByZeroBiz Logo" className="logo" />
+        </div>
+      </footer>
     </div>
   )
 }

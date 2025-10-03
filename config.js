@@ -2,7 +2,7 @@ export const CONFIG = {
   SITE_TITLE: 'Integrity Mystery — Vigilance Awareness Week 2025 (Kolkata Customs)',
   REGISTRATION_FORM_URL: 'https://forms.gle/uBrq4KvYtxpiGgfV8',
   SUBMISSION_FORM_URL: 'https://forms.gle/rF8bd95RAs9fCh516',
-  SUBMISSION_FORM_ACTION: '',
+  SUBMISSION_FORM_ACTION: 'https://docs.google.com/forms/u/0/d/e/1FAIpQLScosB0XXaLRdBZBgx5ttFL_RogWC4DngWZfoYMjC8AqFvptLw/formResponse',
   SUBMISSION_FIELDS: {
         teamName: 'entry.888514104', // Your 'Team Name' entry ID
         teamId: 'entry.2096894098', // Your 'Team ID' entry ID

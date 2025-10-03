@@ -28,30 +28,14 @@ export default function Home(){
                  Marks will be awarded for <em>promptness</em>, <em>correctness</em>, and <em>writing fluidity</em>. 
                  Quotations, rules/acts/case laws will fetch additional marks.
               </p>
-              {/* <li>One member registers the team via the registration form.</li>
-              <li>Each morning, a new clue is published on the Day X page by an Admin.</li>
-              <li>Teams solve the clue and submit answers via the Puzzle Submission form.</li>
-              <li>Moderators review submissions, award points, leaderboard updates automatically via the published sheet.</li>
-              <li>Final day: winners will be announced here and on the Winners page.</li> */}
             </ol>
           </div>
-
-          {/* <div className="card">
-            <h3>Sample PDFs placed here</h3>
-            <p className="small">Download here</p>
-            <a className="pdf-link" href="/pdfs/complaint.pdf" target="_blank">Download: Complaint Letter (complaint.pdf)</a>
-            <a className="pdf-link" href="/pdfs/io_note.pdf" target="_blank">Download: IO Note (io_note.pdf)</a>
-            <a className="pdf-link" href="/pdfs/prelim_report.pdf" target="_blank">Download: Preliminary Findings (prelim_report.pdf)</a>
-            <a className="pdf-link" href="/pdfs/charge_memo.pdf" target="_blank">Download: Charge Memo (charge_memo.pdf)</a>
-            <a className="pdf-link" href="/pdfs/final_order.pdf" target="_blank">Download: Final Order (final_order.pdf)</a> 
-          </div> */}
         </div>
 
         <aside>
           <div className="card">
             <h3>Admin helper</h3>
             <p className="small">To publish a clue: open the Day page and click "Publish Clue". Use the Admin password.</p>
-            {/* <p className="small">Config: edit <code>config.js</code> with your Google Forms & Sheets URLs.</p> */}
           </div>
 
           <div className="card">

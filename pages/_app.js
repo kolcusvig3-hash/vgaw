@@ -18,8 +18,8 @@ export default function MyApp({ Component, pageProps }) {
             {/* <a href="/submit">Submit Answers</a> */}
             <a href="/leaderboard">Leaderboard</a>
             <a href="/winner">Winners</a>
-            {/* Example: Link to Day 1 to test your new [day].js file */}
-            <a href="./1">Daily 1 Myestery</a>
+            {/* CORRECTED LINK: Changed href from /test_day.js to the correct Next.js path /test_day */}
+            <a href="/test_day">Daily Myestery</a> 
           </nav>
         </div>
       </div>

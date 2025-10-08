@@ -19,7 +19,7 @@ export default function MyApp({ Component, pageProps }) {
             <a href="/leaderboard">Leaderboard</a>
             <a href="/winner">Winners</a>
             {/* CORRECTED LINK: Changed href from /test_day.js to the correct Next.js path /test_day */}
-            <a href="/test_day">Daily Myestery</a> 
+            <a href="/day5">Daily Myestery</a> 
           </nav>
         </div>
       </div>

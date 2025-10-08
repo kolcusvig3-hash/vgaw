@@ -5,192 +5,276 @@ const DAY_CONTENT = {
     code: "D1",
     title: "Day 1 — The Curse of the Phantom Complaint",
     story: `Our protagonist, an officer known only as "Victor," was a rising star in the customs department. As a Superintendent, he was instrumental in busting several large-scale smuggling rackets, earning him a reputation for being incorruptible. His colleagues looked up to him, and he was held up as a shining example of a dedicated civil servant. In a small, almost forgotten corner of the department’s vigilance records, a complaint had been filed against him. An anonymous letter, written in a shaky hand, alleged that he had accepted a bribe to facilitate the movement of undeclared goods through the port. However, the vigilance wing of the department found no substantiating evidence and, in due course, closed the file. The matter was never deemed serious enough to warrant a formal investigation or a charge sheet, and Victor's integrity certificate remained pristine. With his service record unblemished, he was promoted to the prestigious rank of Assistant Commissioner.
-His new position brought more power and more enemies. A few months into his new role, a thunderclap of a charge sheet lands on his desk. It’s not from his department but from the Central Bureau of Investigation (CBI). The charges were severe: criminal conspiracy and demanding and accepting illegal gratification under the Prevention of Corruption Act. The CBI's case was built on a series of sting operations, a network of informants, and a trail of encrypted messages pointing to his alleged involvement while he was a Superintendent. The department, on receiving the CBI’s charge sheet, immediately initiated a parallel disciplinary proceeding.
-Course of Action Taken/Investigation: The Principal Commissioner of Customs, acting on the CBI's chargesheet, quickly prepared a departmental charge memo against Victor under Rule 14 of the CCS (CCA) Rules, 1965. The Principal Commissioner, a no-nonsense officer, was determined to take swift action against any whiff of corruption, regardless of rank. Victor’s plea that he had already been cleared of this very allegation was dismissed, as the CBI’s evidence was presented as a new and independent development. The Principal Commissioner believed that since his office had prepared and issued the charge sheet, it was also within his purview to impose the penalty after the inquiry was concluded. He was, after all, the administrative head of the office and had a clear directive to uphold integrity.
-Proves that Came Out:
-- A comprehensive CBI chargesheet and its detailed report, including transcripts of encrypted messages, a forensic analysis of the funds, and financial transaction records.
-- The departmental charge sheet, which was a replica of the CBI’s, issued and signed by the Principal Commissioner.
-- The fact that Victor was a Group 'A' officer and his appointing authority was a much higher entity than the Principal Commissioner.`,
-    question: `Victor's lawyer argues that regardless of the CBI's findings, the disciplinary process is invalid. In a single, comprehensive paragraph, explain why the Principal Commissioner’s belief is flawed. Then, describe the correct legal action the department should have taken to avoid this procedural error and ensure the disciplinary action is legally sound.`,
+His new position brought more power and more enemies. A few months into his new role, a thunderclap of a charge sheet lands on his desk. It’s not from his department but from the Central Bureau of Investigation (CBI). The charges were severe: criminal conspiracy and demanding and accepting illegal gratification under the Prevention of Corruption Act. The CBI claimed their investigation had unearthed fresh, compelling evidence linking him to the old, phantom complaint that the department had previously closed. Victor’s entire career, his reputation, and his freedom now hung in the balance.
+Proves that Came Out: The CBI, after meticulous investigation, presented evidence that the anonymous complaint was not phantom after all, but was filed by a disgruntled importer whose goods Victor had seized years earlier. The importer had colluded with a junior clerk in the vigilance unit to ensure the department's inquiry was scuttled. The CBI’s fresh evidence, which included the junior clerk’s confession and a recording of Victor’s conversation with the importer, was irrefutable. The CBI proved that the first departmental inquiry was flawed and that Victor had indeed accepted the bribe.
+`,
+    question: `What immediate action, as per **CCS (CCA) Rules, 1965**, is the disciplinary authority *likely* to take against Victor, the Assistant Commissioner, upon receiving the CBI’s charge sheet and the evidence that directly links him to the corruption charge?`,
 }
 
-// NOTE: This component is a modified version of your original [day].js logic
-// It no longer uses useRouter, the DAYS object, the admin password, or the publishing logic.
+// Utility function to format seconds into minutes:seconds
+const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+}
+
 export default function Day1(){
     const info = DAY_CONTENT
     const dayKey = info.code;
 
-    const [teamName, setTeamName] = useState('')
-    const [teamId, setTeamId] = useState('')
+    // State now uses a single identifier: Registration ID
+    const [regId, setRegId] = useState('')
     const [answer, setAnswer] = useState('')
+    const [rules, setRules] = useState('') // State for rules/case laws
+    
     const [showQuestion, setShowQuestion] = useState(false) 
     // 150 seconds = 2 mins 30 secs
     const [secondsLeft, setSecondsLeft] = useState(150) 
-    const [autoSubmitted, setAutoSubmitted] = useState(false)
+    
+    // Submission States
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [autoSubmitted, setAutoSubmitted] = useState(false)
     
-    // Story is now always 'published'
-    const isStoryPublished = true;
-    
-    const timerRef = useRef(null)
+    // Custom Modal/Message Box State (Replaces alert/confirm)
+    const [messageModal, setMessageModal] = useState({
+        isVisible: false,
+        title: '',
+        content: '',
+        isError: false,
+        onConfirm: null,
+    })
 
-    // EFFECT for timer logic (now simplified without a need to check isStoryPublished)
-    useEffect(()=>{
-        if(!showQuestion || autoSubmitted || isSubmitting) return
-        
-        clearTimeout(timerRef.current) 
-
-        if(secondsLeft <= 0){
-            handleSubmit(true) // Pass true for auto-submission
-            return
+    // --- Core Timer Logic ---
+    useEffect(() => {
+        let timer;
+        if (showQuestion && secondsLeft > 0 && !autoSubmitted) {
+            timer = setInterval(() => {
+                setSecondsLeft(prev => prev - 1);
+            }, 1000);
+        } else if (secondsLeft === 0 && showQuestion && !autoSubmitted) {
+            // Auto submit when time runs out
+            handleSubmit(true);
         }
-        
-        timerRef.current = setTimeout(()=> setSecondsLeft(s => s-1), 1000)
-        
-        return ()=> clearTimeout(timerRef.current)
-        
-    }, [showQuestion, secondsLeft, autoSubmitted, isSubmitting])
 
-    function handleShowQuestion(){
-        if(!teamName || !teamId){
-            alert('Please enter Your Name and Registration ID before viewing the question.')
-            return
+        return () => clearInterval(timer);
+    }, [showQuestion, secondsLeft, autoSubmitted]);
+
+    const handleShowQuestion = () => {
+        if (!regId) {
+            setMessageModal({
+                isVisible: true,
+                title: 'Missing Registration ID',
+                content: 'Please enter your Registration ID to start the timer.',
+                isError: true,
+                onConfirm: null,
+            });
+            return;
         }
-        setShowQuestion(true) // Show the question and start the timer
+        setShowQuestion(true);
     }
 
-    async function handleSubmit(isAuto=false){
-        if(autoSubmitted || isSubmitting) return
+    // --- Core Submission Logic ---
+    const handleSubmit = async (isAuto) => {
+        // Prevent double submission
+        if (isSubmitting || autoSubmitted) return;
 
-        setAutoSubmitted(true) 
-        setIsSubmitting(true)
-        clearTimeout(timerRef.current) 
-
-        const action = CONFIG.SUBMISSION_FORM_ACTION
-        const fields = CONFIG.SUBMISSION_FIELDS || {}
-        const dayCode = info.code
-
-        if(action && Object.keys(fields).length>0){
-            
-            const params = []
-            
-            if(fields.teamName) params.push(`${encodeURIComponent(fields.teamName)}=${encodeURIComponent(teamName)}`)
-            if(fields.teamId) params.push(`${encodeURIComponent(fields.teamId)}=${encodeURIComponent(teamId)}`)
-            if(fields.dayCode) params.push(`${encodeURIComponent(fields.dayCode)}=${encodeURIComponent(dayCode)}`)
-            if(fields.answer) params.push(`${encodeURIComponent(fields.answer)}=${encodeURIComponent(answer + (isAuto? ' (AUTO-SUBMITTED on timeout)' : ''))}`)
-            
-            const url = action + (action.includes('?')? '&' : '?') + params.join('&')
-
-            // Use window.open to reliably force submission
-            window.open(url, '_blank')
-
-            alert('✅ Your answer has been submitted. A confirmation tab may have opened and closed automatically.');
-            
-        } else {
-            alert("Error: Submission action or fields are not configured properly. Submission aborted.");
-            setAutoSubmitted(false)
+        // Validation to prevent the exact error you saw
+        if (!regId) {
+            setMessageModal({
+                isVisible: true,
+                title: 'Submission Error',
+                content: 'Registration ID cannot be empty. This is required for submission.',
+                isError: true,
+                onConfirm: null,
+            });
+            return;
         }
+
+        setIsSubmitting(true);
         
-        setIsSubmitting(false)
+        // Use URLSearchParams for Google Form submission format
+        const formData = new URLSearchParams();
+        
+        // This is where we ensure the missing entry ID is included!
+        formData.append(CONFIG.SUBMISSION_FIELDS.RegId, regId); 
+        
+        formData.append(CONFIG.SUBMISSION_FIELDS.dayCode, dayKey);
+        formData.append(CONFIG.SUBMISSION_FIELDS.answer, answer || (isAuto ? 'Time Expired: No Answer Provided' : ''));
+        formData.append(CONFIG.SUBMISSION_FIELDS.rules, rules || 'NA');
+
+        try {
+            // Direct submission to Google Form Action URL
+            const response = await fetch(CONFIG.SUBMISSION_FORM_ACTION, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors', // Must use 'no-cors' for direct Google Form submission
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+
+            // Note: Since mode is 'no-cors', response.ok will always be false. 
+            // We assume success if no network error occurred.
+            
+            setSecondsLeft(0); // Stop the timer
+            setAutoSubmitted(true);
+
+            setMessageModal({
+                isVisible: true,
+                title: isAuto ? 'Time Expired - Auto-Submitted' : 'Submission Successful!',
+                content: `Your answer for, ${info.title}, has been successfully submitted! Thank you for participating.`,
+                isError: false,
+                onConfirm: null,
+            });
+
+        } catch (error) {
+            console.error('Submission error:', error);
+            setMessageModal({
+                isVisible: true,
+                title: 'Submission Failed',
+                content: 'A network error occurred. Please check your connection and try again.',
+                isError: true,
+                onConfirm: null,
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
-    // Helper function to format time
-    const formatTime = (totalSeconds) => {
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = String(totalSeconds % 60).padStart(2, '0');
-        return `${minutes}:${seconds}`;
-    };
+    // Content for the current day
+    const infoContent = (
+        <>
+            {/* INSTRUCTIONS BLOCK - MOVED OUTSIDE <P> FOR VALID JSX/HTML */}
+            <div style={{ padding: '15px', border: '1px solid #333', borderRadius: '8px', backgroundColor: '#f9f9f9', marginBottom: '20px', fontSize: '0.95em' }}>
+                <p style={{ fontWeight: 'bold', textTransform: 'uppercase', color: '#333', marginBottom: '10px', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>Instructions</p>
+                <p style={{ lineHeight: '1.4', margin: '0' }}>
+                    Please <strong>read the entire story first</strong>. When you fully understand the case and have filled in your <strong>Registration ID</strong> below, press <strong>'Show Question & Start Timer'</strong>. This will reveal the question and start your <strong>2 minute 30 second</strong> timer. Answer within the stipulated time or it will be submitted automatically. Extra points will be given for citing "Quotations, Rules/Acts/Case Laws. <strong> Usage of AI will be verified and if found, will attract negative marks.</strong>"
+                </p>
+            </div>
+            {/* END INSTRUCTIONS BLOCK */}
+            
+            <p className="story-content">
+                <span className="story-label">Story:</span>
+                {info.story}
+            </p>
+            {showQuestion && (
+                <div className="question-box">
+                    <span className="story-label">Question (Answer within {formatTime(150)}):</span>
+                    <p className="question-content">
+                        <strong>{info.question}</strong>
+                    </p>
+                </div>
+            )}
+        </>
+                        );
 
     return (
-        <div>
-            <div className="card">
-                <h2>{info.title}</h2>
-                
-                {/* --- MAIN PARTICIPANT CONTENT (Now always visible) --- */}
-                <>
-                    {/* INSTRUCTIONS */}
-                    {!showQuestion && !autoSubmitted && (
-                        <div style={{marginBottom: '20px', padding: '10px', border: '1px solid #ccc', backgroundColor: '#f9f9f9'}}>
-                            **INSTRUCTIONS:** 🧐 Please **read the entire story first**. When you fully understand the case and have filled in your **Your Name** and **Registration ID** below, press **'Show Question & Start Timer'**. This will reveal the question and start your **2 minute 30 second** timer.
-                        </div>
-                    )}
+        <div className="day-page">
 
-                    {/* STORY */}
-                    <p className="small">
-                        <strong>Story:</strong>
-                        <br/>
-                        {info.story.split('\n').map((line, index) => (
-                            <span key={index}>{line}<br/></span>
-                        ))}
-                    </p>
-                    
-                    <hr/>
-                    
-                    {/* PARTICIPANT DETAILS */}
-                    <h3>Participant Details</h3>
-                    <label>Your Name<br/>
-                        <input 
-                            value={teamName} 
-                            onChange={e=>setTeamName(e.target.value)} 
-                            disabled={showQuestion || autoSubmitted}
-                        />
-                    </label>
-                    <br/>
-                    <label>Registration ID<br/>
-                        <input 
-                            value={teamId} 
-                            onChange={e=>setTeamId(e.target.value)} 
-                            disabled={showQuestion || autoSubmitted}
-                        />
-                    </label>
-                    <br/>
-                    <label>Day Code<br/>
-                        <input value={info.code} disabled />
-                    </label>
-
-                    <hr/>
-                    
-                    {/* QUESTION & ANSWER SECTION */}
-                    {showQuestion ? (
-                        <>
-                            <p className="small">
-                                <strong>Question:</strong> {info.question}
-                            </p>
-
-                            <h3>Your Answer</h3>
-                            <textarea 
-                                style={{width:'100%',height:200}} 
-                                value={answer} 
-                                onChange={e=>setAnswer(e.target.value)} 
-                                disabled={autoSubmitted}
-                            ></textarea>
-                        </>
-                    ) : (
-                        <div style={{minHeight: 250, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#eee', borderRadius: '5px'}}>
-                            <p style={{color: '#666', fontStyle: 'italic'}}>Question and Answer box will appear after the timer starts.</p>
-                        </div>
-                    )}
-
-                    <div style={{marginTop:10}}>
-                        {/* BUTTON/TIMER LOGIC */}
-                        {!showQuestion && !autoSubmitted &&
-                            <button 
-                                onClick={handleShowQuestion} 
-                                disabled={!teamName || !teamId}
-                            >
-                                Show Question & Start Timer (2 minutes 30 seconds)
-                            </button>
-                        }
-                        {showQuestion && !autoSubmitted && <div>
-                            <p>Time left: <strong>{formatTime(secondsLeft)}</strong></p>
-                            <button onClick={()=>handleSubmit(false)} disabled={autoSubmitted || isSubmitting}>
-                                {isSubmitting ? 'Submitting...' : 'Submit Now'}
-                            </button>
-                        </div>}
+            {/* Custom Notification Modal */}
+            {messageModal.isVisible && (
+                <div className="modal-overlay">
+                    <div className={`modal-card ${messageModal.isError ? 'error' : 'success'}`}>
+                        <h3>{messageModal.title}</h3>
+                        <p>{messageModal.content}</p>
+                        <button onClick={() => setMessageModal({ ...messageModal, isVisible: false })}>
+                            {messageModal.onConfirm ? 'Confirm' : 'Close'}
+                        </button>
                     </div>
-                    
-                    {autoSubmitted && <p className="small" style={{marginTop: '15px'}}>✅ **Answer was submitted**.</p>}
-                </>
+                </div>
+            )}
+
+
+            <div className="card">
+                <h2>{info.title} ({dayKey})</h2>
+                {info.story ? (
+                    <>
+                        <div className="story-section">
+                            {infoContent}
+                        </div>
+
+                        <div className="input-area" style={{marginTop:10}}>
+                            {/* Registration ID Input */}
+                            <label htmlFor="regId">Registration ID (From Email)</label>
+                            <input
+                                id="regId"
+                                type="text"
+                                placeholder="Your Registration ID (from email)"
+                                value={regId}
+                                onChange={(e) => setRegId(e.target.value)}
+                                disabled={showQuestion}
+                                required
+                            />
+                            
+                            {/* Answer Input (Only visible when question is shown) */}
+                            {showQuestion && (
+                                <div className="response-inputs-flex" 
+                                     style={{ 
+                                         display: 'flex', 
+                                         gap: '20px', 
+                                         flexWrap: 'wrap', 
+                                         width: '100%',
+                                         // Enforce 100% width for immediate children (labels and inputs)
+                                         // if they are not in the flex containers below
+                                     }}>
+                                    
+                                    {/* 1. Answer Box */}
+                                    <div style={{ flex: '1 1 45%', minWidth: '300px', display: 'flex', flexDirection: 'column' }}>
+                                        <label htmlFor="answer">Your Answer</label>
+                                        <textarea
+                                            id="answer"
+                                            placeholder="Type your answer here..."
+                                            value={answer}
+                                            onChange={(e) => setAnswer(e.target.value)}
+                                            rows="8" // Standardized size
+                                            disabled={autoSubmitted}
+                                            required
+                                            style={{ width: '100%', boxSizing: 'border-box', flexGrow: 1 }}
+                                        />
+                                    </div>
+
+                                    {/* 2. Rules/Case Laws Box (Same size as Answer Box) */}
+                                    <div style={{ flex: '1 1 45%', minWidth: '300px', display: 'flex', flexDirection: 'column' }}>
+                                        <label htmlFor="rules">Rules/Acts/Case Laws/Quotation (Optional)</label>
+                                        <textarea
+                                            id="rules"
+                                            placeholder="Quote relevant rules or case laws for bonus marks..."
+                                            value={rules}
+                                            onChange={(e) => setRules(e.target.value)}
+                                            rows="8" // Standardized size
+                                            disabled={autoSubmitted}
+                                            style={{ width: '100%', boxSizing: 'border-box', flexGrow: 1 }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div style={{marginTop:10}}>
+                            {/* BUTTON/TIMER LOGIC */}
+                            {!showQuestion && !autoSubmitted &&
+                                <button 
+                                    onClick={handleShowQuestion} 
+                                    disabled={!regId || isSubmitting} // Checks if RegId is present
+                                >
+                                    Show Question & Start Timer ({formatTime(150)})
+                                </button>
+                            }
+                            {showQuestion && !autoSubmitted && <div>
+                                <p>Time left: <strong>{formatTime(secondsLeft)}</strong></p>
+                                <button onClick={()=>handleSubmit(false)} disabled={autoSubmitted || isSubmitting}>
+                                    {isSubmitting ? 'Submitting...' : 'Submit Now'}
+                                </button>
+                            </div>}
+                        </div>
+                        
+                        {autoSubmitted && <p className="small" style={{marginTop: '15px'}}>✅ **Answer was submitted**.</p>}
+                    </>
+                ) : (
+                    <div style={{padding: '20px', textAlign: 'center'}}>
+                        <p style={{fontSize: '1.2em', color: '#555'}}>The mystery story for {info.title} has not yet been published.</p>
+                    </div>
+                )}
             </div>
         </div>
     )

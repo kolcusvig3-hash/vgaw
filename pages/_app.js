@@ -31,6 +31,7 @@ export default function MyApp({ Component, pageProps }) {
       
       <footer className="footer wrap" style={{paddingTop: '20px', textAlign: 'center'}}>
           <p className="small">&copy; {new Date().getFullYear()} {CONFIG.SITE_TITLE}. All Rights Reserved.</p>
+          <p className="small"> Developed by OneByZeroBiz </p>
       </footer>
     </>
   )

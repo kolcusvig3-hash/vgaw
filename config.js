@@ -11,5 +11,5 @@ export const CONFIG = {
         answer: 'entry.1467640414',     // Matches "Your Answer"
         rules: 'entry.539619253'        // Matches "Rules/Acts/Case Laws/Quotation/Section quoted, if any"
     },
-  LEADERBOARD_PUBLISHED_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQwE1apadK5a9Aa7AD5a5r03YfQa5hxw3IxqFlYtazIliny0RQPHmKZ_ToXcyp5o8qLow02s3curIFM/pubhtml?gid=361998592&single=true&widget=true&headers=false',
+  LEADERBOARD_PUBLISHED_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQwE1apadK5a9Aa7AD5a5r03YfQa5hxw3IxqFlYtazIliny0RQPHmKZ_ToXcyp5o8qLow02s3curIFM/pubhtml?gid=361978510&single=true',
 }
